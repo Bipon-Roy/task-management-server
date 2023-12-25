@@ -25,8 +25,23 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // await client.connect();
-        const phonesCollection = client.db("mobileShopDb").collection("phones");
+        const tasksCollection = client.db("taskDb").collection("tasks");
 
+        app.get("/tasks", async (req, res) => {
+            const email = req.query.email;
+            const filter = { status: "todo" };
+            if (email) {
+                filter.email = email;
+            }
+            console.log(filter);
+            const result = await tasksCollection.find(filter).toArray();
+            res.send(result);
+        });
+        app.post("/tasks", async (req, res) => {
+            const data = req.body;
+            const result = await tasksCollection.insertOne(data);
+            res.send(result);
+        });
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");

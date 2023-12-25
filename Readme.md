@@ -7,7 +7,7 @@ Download the [NodeJS](https://nodejs.org/en) and install it.
 ## Clone the repository
 
 ```sh
-git clone https://github.com/Bipon-Roy/mobile-shop-server
+git clone https://github.com/Bipon-Roy/task-management-server
 ```
 
 Now, open the <b>mobile-shop-server</b> folder in your <b>IDE (VS Code recommended)</b> and run the following commands on <b>terminal (Git Bash)</b>

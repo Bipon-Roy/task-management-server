@@ -29,6 +29,17 @@ async function run() {
 
         app.get("/tasks", async (req, res) => {
             const email = req.query.email;
+            const filter = {};
+            if (email) {
+                filter.email = email;
+            }
+            console.log(filter);
+            const result = await tasksCollection.find(filter).toArray();
+            res.send(result);
+        });
+
+        app.get("/todoList", async (req, res) => {
+            const email = req.query.email;
             const filter = { status: "todo" };
             if (email) {
                 filter.email = email;
@@ -37,9 +48,41 @@ async function run() {
             const result = await tasksCollection.find(filter).toArray();
             res.send(result);
         });
+
+        app.get("/ongoingList", async (req, res) => {
+            const email = req.query.email;
+            const filter = { status: "ongoing" };
+            if (email) {
+                filter.email = email;
+            }
+            console.log(filter);
+            const result = await tasksCollection.find(filter).toArray();
+            res.send(result);
+        });
+
         app.post("/tasks", async (req, res) => {
             const data = req.body;
             const result = await tasksCollection.insertOne(data);
+            res.send(result);
+        });
+
+        app.patch("/tasks/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const fetchTask = req.body;
+            console.log(fetchTask);
+            const updatedTask = {
+                $set: {
+                    title: fetchTask.title,
+                    descriptions: fetchTask.descriptions,
+                    priority: fetchTask.priority,
+                    date: fetchTask.date,
+                    status: fetchTask.status,
+                },
+            };
+
+            const result = await tasksCollection.updateOne(filter, updatedTask, options);
             res.send(result);
         });
         // Send a ping to confirm a successful connection

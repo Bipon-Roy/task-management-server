@@ -33,18 +33,22 @@ async function run() {
             if (email) {
                 filter.email = email;
             }
-            console.log(filter);
             const result = await tasksCollection.find(filter).toArray();
             res.send(result);
         });
-
+        app.get("/tasks/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await tasksCollection.find(query).toArray();
+            res.send(result);
+        });
         app.get("/todoList", async (req, res) => {
             const email = req.query.email;
             const filter = { status: "todo" };
             if (email) {
                 filter.email = email;
             }
-            console.log(filter);
+
             const result = await tasksCollection.find(filter).toArray();
             res.send(result);
         });
@@ -55,7 +59,7 @@ async function run() {
             if (email) {
                 filter.email = email;
             }
-            console.log(filter);
+
             const result = await tasksCollection.find(filter).toArray();
             res.send(result);
         });
